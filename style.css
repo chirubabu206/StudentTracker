@@ -1,0 +1,36 @@
+body {
+    background-color: #f8f9fa;
+  }
+  
+  .container {
+    margin-top: 30px;
+  }
+  
+  .card-header {
+    background-color: #007bff;
+    color: white;
+  }
+  
+  .card-body {
+    background-color: #ffffff;
+  }
+  
+  table {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  table th, table td {
+    vertical-align: middle;
+  }
+  
+  table thead {
+    background-color: #007bff;
+    color: white;
+  }
+  
+  .btn {
+    margin-right: 5px;
+  }
+  
