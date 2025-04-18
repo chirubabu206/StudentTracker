@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome to Student Tracker</title>
+  <!-- You can add any other external stylesheets if needed -->
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: url('{{ url_for("static", filename="images/bg1_img.jpg") }}') no-repeat center center fixed;
+      background-size: cover;
+      font-family: 'Segoe UI', sans-serif;
+      height: 100vh; /* Ensure the background covers the full screen */
+    }
+
+    .overlay {
+      background-color: rgba(0, 0, 0, 0.5);  /* Transparent overlay for readability */
+      height: 100%; /* Full height */
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      text-align: center;
+      padding: 20px;
+    }
+
+    h1 {
+      font-size: 48px;
+      margin-bottom: 20px;
+    }
+
+    p {
+      font-size: 20px;
+      margin-bottom: 30px;
+    }
+
+    .buttons {
+      margin-top: 20px;
+    }
+
+    .buttons a {
+      text-decoration: none;
+      color: white;
+      background-color: #007bff;
+      padding: 12px 24px;
+      border-radius: 6px;
+      margin: 0 10px;
+      transition: background 0.3s;
+    }
+
+    .buttons a:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <div class="overlay">
+    <h1>Welcome to the Student Performance Tracker</h1>
+    <p>Track and manage student records with ease</p>
+    <div class="buttons">
+      <a href="{{ url_for('login') }}">Login</a>
+      <a href="{{ url_for('register') }}">Register</a>
+    </div>
+  </div>
+</body>
+</html>
