@@ -2,12 +2,18 @@ from flask import Flask, render_template, request, redirect, url_for, session, f
 from flask_pymongo import PyMongo
 from werkzeug.security import generate_password_hash, check_password_hash
 from bson.objectid import ObjectId
+from datetime import datetime
+from dotenv import load_dotenv
+import os
+
+# Load environment variables from .env file
+load_dotenv()
 
 app = Flask(__name__)
 
 # MongoDB Configuration
-app.config["MONGO_URI"] = "mongodb://allammanikanta19:ChiruBabu0852Y@ac-etlzzin-shard-00-00.6altixk.mongodb.net:27017,ac-etlzzin-shard-00-01.6altixk.mongodb.net:27017,ac-etlzzin-shard-00-02.6altixk.mongodb.net:27017/student_performance_db?replicaSet=atlas-3nh6iy-shard-0&ssl=true&authSource=admin&retryWrites=true&w=majority&appName=Cluster0"
-app.config['SECRET_KEY'] = 'your_secret_key'  # Needed for session management
+app.config["MONGO_URI"] = os.getenv("MONGO_URI")  # Load Mongo URI from .env
+app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')  # Load secret key from .env
 mongo = PyMongo(app)
 
 # Home Route - Displays all students if logged in
@@ -86,7 +92,8 @@ def add_student():
                 'name': name,
                 'subject': subject,
                 'grade': grade,
-                'added_by': session['username']
+                'added_by': session['username'],
+                'created_at': datetime.utcnow()  # Add timestamp when student is added
             })
             flash("Student added successfully!", "success")
             return redirect(url_for('index'))
@@ -126,6 +133,11 @@ def delete_student(student_id):
     mongo.db.students.delete_one({'_id': ObjectId(student_id)})
     flash("Student deleted successfully!", "success")
     return redirect(url_for('index'))
+
+# Error handler for 404
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'), 404
 
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port=5000, debug=True)
