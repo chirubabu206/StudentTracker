@@ -8,12 +8,17 @@ import os
 
 # Load environment variables from .env file
 load_dotenv()
+print("DEBUG: MONGO_URI =", os.getenv("MONGO_URI"))
+print("DEBUG: SECRET_KEY =", os.getenv("SECRET_KEY"))
 
+# Initialize the Flask app
 app = Flask(__name__)
 
 # MongoDB Configuration
 app.config["MONGO_URI"] = os.getenv("MONGO_URI")  # Load Mongo URI from .env
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')  # Load secret key from .env
+
+# Initialize PyMongo
 mongo = PyMongo(app)
 
 # Home Route - Displays all students if logged in
@@ -41,11 +46,13 @@ def register():
         password = request.form.get('password')
         hashed_password = generate_password_hash(password)
 
+        # Check if the user already exists
         existing_user = mongo.db.users.find_one({'username': username})
         if existing_user:
             flash("Username already exists, please choose another one.", "danger")
             return redirect(url_for('register'))
 
+        # Insert new user into the database
         mongo.db.users.insert_one({'username': username, 'password': hashed_password})
         flash("Registration successful! Please log in.", "success")
         return redirect(url_for('landing_page'))
@@ -88,6 +95,7 @@ def add_student():
             subject = request.form.get('subject')
             grade = request.form.get('grade')
 
+            # Insert new student into the database
             mongo.db.students.insert_one({
                 'name': name,
                 'subject': subject,
@@ -114,6 +122,7 @@ def edit_student(student_id):
         subject = request.form.get('subject')
         grade = request.form.get('grade')
 
+        # Update the student information
         mongo.db.students.update_one(
             {'_id': ObjectId(student_id)},
             {'$set': {'name': name, 'subject': subject, 'grade': grade}}
@@ -121,7 +130,7 @@ def edit_student(student_id):
         flash("Student updated successfully!", "success")
         return redirect(url_for('index'))
 
-    student['_id'] = str(student['_id'])
+    student['_id'] = str(student['_id'])  # Convert ObjectId to string for rendering
     return render_template('edit_student.html', student=student)
 
 # Delete Student Route
@@ -130,6 +139,7 @@ def delete_student(student_id):
     if 'username' not in session:
         return redirect(url_for('landing_page'))
 
+    # Delete student from the database
     mongo.db.students.delete_one({'_id': ObjectId(student_id)})
     flash("Student deleted successfully!", "success")
     return redirect(url_for('index'))
