@@ -109,7 +109,6 @@ def add_student():
         return render_template('add_student.html')
     return redirect(url_for('landing_page'))
 
-# Edit Student Route
 @app.route('/edit/<student_id>', methods=['GET', 'POST'])
 def edit_student(student_id):
     if 'username' not in session:
@@ -122,7 +121,7 @@ def edit_student(student_id):
         subject = request.form.get('subject')
         grade = request.form.get('grade')
 
-        # Update the student information
+        # Update the student information in the database
         mongo.db.students.update_one(
             {'_id': ObjectId(student_id)},
             {'$set': {'name': name, 'subject': subject, 'grade': grade}}
@@ -130,7 +129,7 @@ def edit_student(student_id):
         flash("Student updated successfully!", "success")
         return redirect(url_for('index'))
 
-    student['_id'] = str(student['_id'])  # Convert ObjectId to string for rendering
+    student['_id'] = str(student['_id'])  # Convert ObjectId to string for rendering in the template
     return render_template('edit_student.html', student=student)
 
 # Delete Student Route
