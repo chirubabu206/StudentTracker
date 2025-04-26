@@ -18,12 +18,6 @@ print("DEBUG: SECRET_KEY =", SECRET_KEY)
 
 # Initialize the Flask app
 app = Flask(__name__)
-# 1) Read your URI from the environment
-app.config["MONGO_URI"] = os.environ["MONGO_URI"]
-
-# 2) Tell PyMongo to use certifi’s CA file
-#    This ensures the TLS handshake can verify Atlas’s certificates.
-mongo = PyMongo(app, tlsCAFile=certifi.where())
 # MongoDB Configuration
 if not MONGO_URI:
     raise ValueError("❌ MONGO_URI is not set. Please check your .env file.")
