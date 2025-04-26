@@ -150,7 +150,6 @@ def delete_student(student_id):
 def page_not_found(e):
     return render_template('404.html'), 404
 
-print(mongo.db.list_collection_names())
 
 # Run the app
 if __name__ == '__main__':
