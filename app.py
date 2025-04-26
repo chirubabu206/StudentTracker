@@ -6,6 +6,8 @@ from datetime import datetime
 from dotenv import load_dotenv
 import os
 import certifi
+import ssl
+mongo = PyMongo(app, uri=MONGO_URI, tls=True, tlsCAFile=certifi.where())
 
 # Load environment variables from .env file
 load_dotenv()
