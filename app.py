@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 import os
 import certifi
 import ssl
-mongo = PyMongo(app, uri=MONGO_URI, tls=True, tlsCAFile=certifi.where())
+
 
 # Load environment variables from .env file
 load_dotenv()
@@ -30,8 +30,8 @@ app.config["MONGO_URI"] = MONGO_URI
 app.config['SECRET_KEY'] = SECRET_KEY or "defaultsecret"
 
 # Initialize PyMongo with certifi CA bundle
-mongo = PyMongo(app, tlsCAFile=certifi.where())
 
+mongo = PyMongo(app, uri=MONGO_URI, tls=True, tlsCAFile=certifi.where())
 # Home Route
 @app.route('/')
 def index():
